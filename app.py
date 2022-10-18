@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
 
-client = MongoClient("mongodb+srv://RistanAA:admin@cluster0.xldtokf.mongodb.net/?retryWrites=true&w=majority")
+client = MongoClient('mongodb+srv://root:admin123@cluster0.2mpdcho.mongodb.net/?retryWrites=true&w=majority')
 db = client.dbsparta
 
 app = Flask(__name__)
@@ -19,11 +19,15 @@ def login():
    username_receive = request.form["username_give"]
    password_receive = request.form["password_give"]
 
-   user = list(db.users.find({'username':username_receive, 'password':password_receive},{'_id':False}))
+   user = list(db.users.find({'username':username_receive},{'_id':False}))
    if user :
-      return jsonify({'msg':"Login Berhasil", 'status':True})
+      cek = list(db.users.find({'username':username_receive, 'password':password_receive},{'_id':False}))  
+      if cek :
+        return jsonify({'msg':"Login Berhasil", 'status':True})
+      else :
+        return jsonify({'msg':"Password Salah", 'status':False})
    else :
-      return jsonify({'msg':"user tidak ada", 'status':False})
+      return jsonify({'msg':"User Tidak Terdaftar", 'status':False})
       
    
 

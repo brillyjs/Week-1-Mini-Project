@@ -135,21 +135,12 @@
             -moz-osx-font-smoothing: grayscale;
         }
     </style>
-</head>
-
-<body>
-    <div class="login-page">
-        <div class="form">
-            <form class="login-form">
-                <input id="username" type="text" placeholder="username" />
-                <input id="password" type="password" placeholder="password" />
-                <button id="btn-login" type="button">login</button>
-                <p class="message">Not registered? <a href="#">Create an account</a></p>
-            </form>
-        </div>
-    </div>
     <script>
-        $('body').on('click','#btn-login', function(){
+        $(document).ready(function () {
+            $('#username').val('');
+            $('#password').val('');
+        })
+        function login() {
             let username = $('#username').val();
             let password = $('#password').val();
             $.ajax({
@@ -160,30 +151,29 @@
                     if(response["status"] == true){
                         window.location="/vote"
                     }else{
-                        alert(response["msg"])
-                        window.location.reload();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Peringatan',
+                            text: response['msg'],
+                        })
                     }
                 }
             });
-        })
-        // function login() {
-        //     let username = $('#username').val();
-        //     let password = $('#password').val();
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "/login",
-        //         data: {username_give: username, password_give: password},
-        //         success: function (response) {
-        //             alert(response["msg"])
-        //             if(response["status"] == true){
-        //                 window.location="/vote"
-        //             }else{
-        //                 window.location.reload();
-        //             }
-        //         }
-        //     });
-        // }
+        }
     </script>
+</head>
+
+<body>
+    <div class="login-page">
+        <div class="form">
+            <form class="login-form">
+                <input id="username" type="text" placeholder="username"/>
+                <input id="password" type="password" placeholder="password"/>
+                <button id="btn-login" type="button" onclick="login()">login</button>
+            </form>
+        </div>
+    </div>
 </body>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </html>
