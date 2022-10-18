@@ -8,6 +8,7 @@
     <title>Login Page</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&amp;display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script> $('.message a').click(function () {
             $('form').animate({ height: "toggle", opacity: "toggle" }, "slow");
         });</script>
@@ -139,21 +140,50 @@
 <body>
     <div class="login-page">
         <div class="form">
-            <form class="register-form">
-                <input type="text" placeholder="name" />
-                <input type="password" placeholder="password" />
-                <input type="text" placeholder="email address" />
-                <button>create</button>
-                <p class="message">Already registered? <a href="#">Sign In</a></p>
-            </form>
             <form class="login-form">
-                <input type="text" placeholder="username" />
-                <input type="password" placeholder="password" />
-                <button>login</button>
+                <input id="username" type="text" placeholder="username" />
+                <input id="password" type="password" placeholder="password" />
+                <button id="btn-login" type="button">login</button>
                 <p class="message">Not registered? <a href="#">Create an account</a></p>
             </form>
         </div>
     </div>
+    <script>
+        $('body').on('click','#btn-login', function(){
+            let username = $('#username').val();
+            let password = $('#password').val();
+            $.ajax({
+                type: "POST",
+                url: "/login",
+                data: {username_give: username, password_give: password},
+                success: function (response) {
+                    if(response["status"] == true){
+                        window.location="/vote"
+                    }else{
+                        alert(response["msg"])
+                        window.location.reload();
+                    }
+                }
+            });
+        })
+        // function login() {
+        //     let username = $('#username').val();
+        //     let password = $('#password').val();
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "/login",
+        //         data: {username_give: username, password_give: password},
+        //         success: function (response) {
+        //             alert(response["msg"])
+        //             if(response["status"] == true){
+        //                 window.location="/vote"
+        //             }else{
+        //                 window.location.reload();
+        //             }
+        //         }
+        //     });
+        // }
+    </script>
 </body>
 
 </html>

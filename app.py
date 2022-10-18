@@ -9,6 +9,23 @@ app = Flask(__name__)
 @app.route('/')
 def home():
    return render_template('login.html')
+   
+@app.route('/vote')
+def vote():
+   return render_template('index.html')
+   
+@app.route('/login' , methods=["POST"])
+def login():
+   username_receive = request.form["username_give"]
+   password_receive = request.form["password_give"]
+
+   user = list(db.users.find({'username':username_receive, 'password':password_receive},{'_id':False}))
+   if user :
+      return jsonify({'msg':"Login Berhasil", 'status':True})
+   else :
+      return jsonify({'msg':"user tidak ada", 'status':False})
+      
+   
 
 @app.route("/bucket", methods=["POST"])
 def bucket_post():
