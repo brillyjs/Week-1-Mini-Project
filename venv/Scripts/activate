@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="D:\Brilly\Documents\Belajar\Bootcamp\Week 1 Mini Project\venv"
+VIRTUAL_ENV="D:\LearningX\Week 1\Week-1-Mini-Project\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
