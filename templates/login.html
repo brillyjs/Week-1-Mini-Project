@@ -149,7 +149,7 @@
                 data: {username_give: username, password_give: password},
                 success: function (response) {
                     if(response["status"] == true){
-                        window.location="/vote"
+                        window.location="/index?username="+ username
                     }else{
                         Swal.fire({
                             icon: 'error',
