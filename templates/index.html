@@ -150,9 +150,21 @@
                 url: "/vote",
                 data: { list_id: num , username: username},
                 success: function (response) {
-                    alert(response["msg"]);
-                    // $('btn-vote-'+num).hide()
-                    window.location.reload()
+                    $('btn-vote-'+num).hide()
+                    if(response["status"] == 'finish'){
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'We will do this !',
+                            text: response['voted'],
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload()
+                            }
+                        })
+                    }else {
+                        alert(response["msg"]);
+                        window.location.reload()
+                    }
                 }
             });
         }
@@ -209,6 +221,8 @@
     </div>
     <div class="mybox" id="bucket-list">
     </div>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

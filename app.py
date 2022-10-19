@@ -1,5 +1,6 @@
 from ast import arg
-from flask import Flask, render_template, request, jsonify
+from tokenize import group
+from flask import Flask, render_template, request, jsonify, redirect
 from pymongo import MongoClient
 
 client = MongoClient('mongodb+srv://RistanAA:admin@cluster0.xldtokf.mongodb.net/?retryWrites=true&w=majority')
@@ -40,6 +41,8 @@ def vote():
     user = db.users.find_one({'username':username},{'_id':0})
     # print(user['status'])
     # print(data,list_id, username)
+   
+
     if user['voted'] == 0:
         if len(data) > 0:
             vote = data[0]['vote'] + 1
@@ -51,6 +54,23 @@ def vote():
                 {'username': username},
                 {'$set': {'voted': int(list_id)}}
             )
+            i = 0
+            sortedList= list(db.bucket.find({},{'_id':0}).sort('vote', -1))
+            # print(tesss)
+            totalVote = list(db.bucket.aggregate([{ '$group': { '_id': i+1, 'TotalVote': { '$sum': '$vote' } } }]))
+            # print(totalVote[0]['TotalVote'])
+            total_vote = totalVote[0]['TotalVote']
+            total_user = db.bucket.count_documents({})
+            # print(total_vote, total_user)
+            if total_vote > total_user:
+               db.bucket.delete_many({})
+               db.bucket.update_one(
+                    {'num': int(sortedList[0]['num'])},
+                    {'$set': {'vote': 0}}
+                )
+               db.users.update_many({},{ "$set": { "voted": 0, 'idea':0 } })
+               return jsonify({'msg':"Vote Success", 'status': 'finish', 'voted':sortedList[0]['bucket']})
+            
             return jsonify({'msg':"Vote Success", 'status': 'voted', 'voted':list_id})
 
     return jsonify({'msg':"You already voted"})
