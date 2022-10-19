@@ -132,10 +132,11 @@
         }
         function save_bucket() {
             let bucket = $('#bucket').val();
+            let username = $('#user-name').val()
             $.ajax({
                 type: "POST",
                 url: "/bucket",
-                data: {bucket_give: bucket},
+                data: {bucket_give: bucket, username: username},
                 success: function (response) {
                     alert(response["msg"])
                     window.location.reload();
@@ -182,7 +183,7 @@
             $.ajax({
                 type: "POST",
                 url: "/cancel",
-                data: { username: username },
+                data: { username: username , list_id: num},
                 success: function (response) {
                     alert(response["msg"]);
                     window.location.reload();

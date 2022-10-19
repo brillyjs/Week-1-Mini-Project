@@ -62,6 +62,7 @@ def vote():
 def bucket_post():
     # sample_receive = request.form['sample_give']
     bucket_receive = request.form['bucket_give']
+    username = request.form['username']
 
     count = list(db.bucket.find({}, {'num': 1, '_id':0}).sort('_id', -1))
     print(count)
@@ -77,6 +78,11 @@ def bucket_post():
         'vote': 0
     }
     db.bucket.insert_one(doc)
+
+    db.users.update_one(
+        {'username': username},
+        {'$set': {'idea': int(num)}}
+    )  
     return jsonify({'msg': 'data saved!'})
 
 @app.route("/bucket/done", methods=["POST"])
@@ -97,10 +103,18 @@ def delete_bucket():
 @app.route("/cancel", methods=["POST"])
 def cancel_bucket():
     username = request.form['username']
-    # num_receive = request.form['num_give']
+    list_id = request.form['list_id']
+
+    data = db.bucket.find_one({'num':int(list_id)},{'_id':0})
+    # print(data, list_id)
+    vote = data['vote'] - 1
     db.users.update_one(
         {'username': username},
         {'$set': {'voted': 0}}
+    )
+    db.bucket.update_one(
+        {'num': int(list_id)},
+        {'$set': {'vote': vote}}
     )
     return jsonify({'msg': 'cancel done!'})
 
