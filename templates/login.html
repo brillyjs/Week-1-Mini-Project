@@ -159,7 +159,7 @@
             let password = $('#password').val ;
             $.ajax({
                 type: "POST",
-                url: "/logi",
+                url: "/login",
                 data: {username_give: username, password_give: password},
                 succes: function (response) {
                     if (response ["status"] == true){
