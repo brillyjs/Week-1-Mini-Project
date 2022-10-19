@@ -169,9 +169,9 @@
                 url: "/login",
                 data: { username_give: username, password_give: password },
                 success: function (response) {
-                    if (response["status"] == true) {
-                        window.location = "/vote"
-                    } else {
+                    if(response["status"] == true){
+                        window.location="/index?username="+ username
+                    }else{
                         Swal.fire({
                             icon: 'error',
                             title: 'Peringatan',
