@@ -27,8 +27,8 @@ def login():
       cek = list(db.users.find({'username':username_receive, 'password':password_receive},{'_id':False}))  
       if cek :
         return jsonify({'msg':"Login Success", 'status':True})
-    #   else :
-    #     return jsonify({'msg':"Not Found", 'status':False})
+      else :
+         return jsonify({'msg':"Wrong Password", 'status':False})
    else :
       return jsonify({'msg':"User Not Found", 'status':False})
       
