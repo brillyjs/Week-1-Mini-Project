@@ -130,6 +130,31 @@
                 }
             });
         }
+        function show_result(data){
+            console.log(data)
+            $('#bucket-list').empty();
+            let rows = data;
+            let temp_html = '';
+                    for (let i = 0; i < rows.length; i++) {
+                        let bucket = rows[i]['bucket'];
+                        let num = rows[i]['num'];
+                        let done = rows[i]['done'];
+                        let vote = rows[i]['vote'];
+                        if(i == 0){
+                            temp_html += `
+                            <li>
+                                <h2>✅ ${bucket} -> ${vote} vote</h2>
+                            </li>`
+                        }else{
+                            temp_html += `
+                            <li>
+                                <h2>❌ ${bucket} -> ${vote} vote</h2>
+                            </li>`
+                        }
+                    }
+                    temp_html+= `<a href="/index?username={{userLogin}}" class="btn btn-primary">New Vote ?</a>`; 
+                    $('#bucket-list').append(temp_html);
+        }
         function save_bucket() {
             let bucket = $('#bucket').val();
             let username = $('#user-name').val()
@@ -158,7 +183,8 @@
                             text: response['voted'],
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.reload()
+                                show_result(response['data'])
+                                // window.location.reload()
                             }
                         })
                     }else {

@@ -69,7 +69,7 @@ def vote():
                     {'$set': {'vote': 0}}
                 )
                db.users.update_many({},{ "$set": { "voted": 0, 'idea':0 } })
-               return jsonify({'msg':"Vote Success", 'status': 'finish', 'voted':sortedList[0]['bucket']})
+               return jsonify({'msg':"Vote Success", 'status': 'finish', 'voted':sortedList[0]['bucket'], 'data': sortedList})
             
             return jsonify({'msg':"Vote Success", 'status': 'voted', 'voted':list_id})
 
