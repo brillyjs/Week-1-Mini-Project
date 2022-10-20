@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon"
         href="https://th.bing.com/th/id/R.8f7f48333a9154adbeced532b97735a5?rik=AwpUrftBvq38kA&riu=http%3a%2f%2ficons.iconarchive.com%2ficons%2ficonarchive%2fblue-election%2f1024%2fElection-Polling-Box-icon.png&ehk=ijORSIhYXQVvCd%2f%2b7onNb9coV2eHKsAkjFYEZ41zVEU%3d&risl=&pid=ImgRaw&r=0">
-    <title>Login Page</title>
+    <title>Register</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&amp;display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -160,13 +160,24 @@
         $(document).ready(function () {
             $('#username').val('');
             $('#password').val('');
+            $('#confirm_password').val('');
         })
-        function login() {
+        var check = function() {
+            if (document.getElementById('password').value ==
+                document.getElementById('confirm_password').value) {
+                document.getElementById('message').style.color = 'green';
+                document.getElementById('message').innerHTML = 'matching';
+            } else {
+                document.getElementById('message').style.color = 'red';
+                document.getElementById('message').innerHTML = "Password Doesn't Match";
+            }
+        }
+        function register() {
             let username = $('#username').val();
             let password = $('#password').val();
             $.ajax({
                 type: "POST",
-                url: "/login",
+                url: "/register",
                 data: { username_give: username, password_give: password },
                 success: function (response) {
                     if (response["status"] == true) {
@@ -193,12 +204,12 @@
             <form class="login-form">
                 <input id="username" type="text" placeholder="username" />
                 <input id="password" type="password" placeholder="password" />
-                <button id="btn-login" type="button" onclick="login()">login</button>
-                <a href="/register-user">Create New Account</a>
+                <input id="confirm_password" type="password" placeholder="confirm password" onkeyup="check()"/>
+                <span id='message'></span>
+                <button id="btn-register" type="button" onclick="register()">Register</button>
             </form>
         </div>
     </div>
 </body>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 </html>

@@ -11,6 +11,28 @@ app = Flask(__name__)
 @app.route('/')
 def home():
    return render_template('login.html')
+
+@app.route('/register-user')
+def registerUser():
+   return render_template('register.html')
+
+@app.route('/register', methods=['POST'])
+def register():
+   username_receive = request.form["username_give"]
+   password_receive = request.form["password_give"]
+
+   user = list(db.users.find({'username':username_receive},{'_id':False}))
+   if user :
+        return jsonify({'msg':"Username Already Exist", 'status':False})
+   else :
+        doc = {
+            'username': username_receive,
+            'password': password_receive,
+            'voted': 0,
+            'idea': 0
+        }
+        db.users.insert_one(doc)
+        return jsonify({'msg':"User Has Been Created", 'status':True})
    
 @app.route('/index')
 def index():
