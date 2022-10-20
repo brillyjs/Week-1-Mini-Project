@@ -111,7 +111,7 @@
                         temp_html = `
                         <li>
                             <h2>✅ ${bucket}</h2>`
-                            if (response['user'].voted == 0) {
+                            if (response['user'].voted == 0 && response['status'] =='true') {
                                 temp_html += `
                                 <button id="btn-vote-${num}" onclick="vote(${num})" type="button" class="btn btn-outline-primary">Vote!</button>`
                             }

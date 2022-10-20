@@ -60,9 +60,9 @@ def vote():
             totalVote = list(db.bucket.aggregate([{ '$group': { '_id': i+1, 'TotalVote': { '$sum': '$vote' } } }]))
             # print(totalVote[0]['TotalVote'])
             total_vote = totalVote[0]['TotalVote']
-            total_user = db.bucket.count_documents({})
+            total_user = db.users.count_documents({})
             # print(total_vote, total_user)
-            if total_vote > total_user:
+            if total_vote >= total_user:
                db.bucket.delete_many({})
                db.bucket.update_one(
                     {'num': int(sortedList[0]['num'])},
@@ -140,12 +140,21 @@ def cancel_bucket():
 
 @app.route("/bucket", methods=["GET"])
 def bucket_get():
+    
     username = request.args.get('username')
     buckets_list = list(db.bucket.find({}, {'_id': False}))
 
     user = db.users.find_one({'username':username},{'_id':0})
 
-    return jsonify({'buckets': buckets_list,'user':user})
+    # return jsonify({'buckets': buckets_list,'user':user}) 
+
+    total_user_idea = db.users.count_documents({'idea':{'$ne' : 0}})
+    total_user = db.users.count_documents({})
+    print(total_user, total_user_idea)
+    if total_user_idea == total_user :
+        return jsonify({'buckets': buckets_list,'user':user, 'status': 'true'})
+    else :
+        return jsonify({'buckets': buckets_list,'user':user, 'status' : 'false'})
 
 if __name__ == '__main__':
    app.run('0.0.0.0', port=5000, debug=True)
